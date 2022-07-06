@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModalityWorkList", "Modalit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{F420F3E6-787F-4DEF-A241-19D12F2CD2B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorklistTestGUI", "WorklistTestGUI\WorklistTestGUI.csproj", "{E573F922-1FC5-492A-8E96-320C59C8314A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F420F3E6-787F-4DEF-A241-19D12F2CD2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F420F3E6-787F-4DEF-A241-19D12F2CD2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F420F3E6-787F-4DEF-A241-19D12F2CD2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E573F922-1FC5-492A-8E96-320C59C8314A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E573F922-1FC5-492A-8E96-320C59C8314A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E573F922-1FC5-492A-8E96-320C59C8314A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E573F922-1FC5-492A-8E96-320C59C8314A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

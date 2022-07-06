@@ -11,7 +11,7 @@ namespace ModalityWorkList
 {
     public class ModalityWorklistProvider
     {
-        public static void CreateWorklist(Patient patient)
+        public static void CreateWorklistForMRCT(Patient patient)
         {
             string yyyyMMddHHmmss = DateTime.Now.ToString().Replace(@"/", "").Replace(":", "").Replace(" ", "");
             DicomUID SopClassUID = DicomUID.Generate();
@@ -137,6 +137,50 @@ namespace ModalityWorkList
                 throw new Exception("failed");
             }
         }
+
+        public static void CreateWorklistForDX(Patient patient)
+        {
+            string yyyyMMddHHmmss = DateTime.Now.ToString().Replace(@"/", "").Replace(":", "").Replace(" ", "");
+            DicomUID SopClassUID = DicomUID.Generate();
+            DicomUID SopInstanceUID = DicomUID.Generate();
+            DicomDataset worklistDataSet = new DicomDataset();
+            worklistDataSet.Add(DicomTag.SOPClassUID, SopClassUID);
+            worklistDataSet.Add(DicomTag.SOPInstanceUID, SopInstanceUID);
+            worklistDataSet.Add(DicomTag.PatientName, Encoding.UTF8, patient.PatientName);
+            worklistDataSet.Add(DicomTag.PatientID, Encoding.UTF8, patient.PatientID);
+            worklistDataSet.Add(DicomTag.PatientBirthDate, Encoding.UTF8, patient.PatientBirthDate ?? string.Empty);
+            worklistDataSet.Add(DicomTag.PatientSex, Encoding.UTF8, patient.PatientSex ?? "O");
+            worklistDataSet.Add(DicomTag.AccessionNumber, Encoding.UTF8, patient.AccessionNumber ?? string.Empty);
+            worklistDataSet.Add(DicomTag.ReferringPhysicianName, Encoding.UTF8, patient.ReferringPhysicianName ?? string.Empty);
+            worklistDataSet.Add(DicomTag.OperatorsName, Encoding.UTF8, patient.OperatorsName ?? string.Empty);
+            worklistDataSet.Add(DicomTag.NameOfPhysiciansReadingStudy, Encoding.UTF8, patient.NameOfPhysiciansReadingStudy ?? string.Empty);
+            worklistDataSet.Add(DicomTag.PatientWeight, Encoding.UTF8, patient.PatientWeight > 0 ? patient.PatientWeight : 0.0);
+            worklistDataSet.Add(DicomTag.AdditionalPatientHistory, Encoding.UTF8, patient.AdditionalPatientHistory ?? String.Empty);
+            worklistDataSet.Add(DicomTag.Allergies, Encoding.UTF8, patient.Allergies ?? String.Empty);
+            worklistDataSet.Add(DicomTag.ValueType, "DATATIME");
+            worklistDataSet.Add(DicomTag.DateTime, DateTime.Now);
+            worklistDataSet.Add(DicomTag.Date, DateTime.Now);
+            worklistDataSet.Add(DicomTag.Time, DateTime.Now);
+
+            string tempFolder = Path.Combine(Path.GetTempPath(), nameof(ModalityWorkList));
+            string savePath = Path.Combine(tempFolder, patient.PatientID + "_" + yyyyMMddHHmmss + ".wl");
+            Directory.CreateDirectory(tempFolder);
+            DicomFile worklistFile = new DicomFile(worklistDataSet);
+            worklistFile.Save(savePath);
+
+            bool uploadSuccess = SftpUploadOneFile(
+                "172.16.2.148",
+                "pacs",
+                "pacs123698745",
+                savePath,
+                "/etc/worklists/" + patient.PatientID + "_" + yyyyMMddHHmmss + ".wl");
+
+            if (uploadSuccess != true)
+            {
+                throw new Exception("failed");
+            }
+        }
+
 
         private const int DefaultPort = 22;
 
