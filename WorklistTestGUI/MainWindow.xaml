@@ -15,10 +15,10 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.ColumnSpan="4" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 30">
-            是否在结算后将此处方中的影像检查<LineBreak/>提交到影像设备工作列表？
+            此挂单处方中存在影像处方<LineBreak/>是否在结算后将此处方中的影像检查<LineBreak/>提交到影像设备工作列表？
         </TextBlock>
         <Button Content="是" Grid.Column="1" Grid.Row="1" FontSize="20" Height="50" Margin="0 0 20 0" VerticalAlignment="Top" Click="Yes_Click"/>
         <Button Content="否" Grid.Column="2" Grid.Row="1" FontSize="20" Height="50" Margin="20 0 0 0" VerticalAlignment="Top" Click="No_Click"/>

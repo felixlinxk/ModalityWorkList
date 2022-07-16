@@ -47,7 +47,6 @@ namespace ModalityWorkList
             worklistDataSet.Add(DicomTag.SpecimenDescriptionSequence, scheduledInfo);
             worklistDataSet.Add(DicomTag.SpecimenIdentifier, yyyyMMddHHmmss);
             worklistDataSet.Add(DicomTag.SpecimenUID, DicomUID.Generate());
-
             worklistDataSet.Add(DicomTag.StudyInstanceUID, DicomUID.Generate());
             worklistDataSet.Add(DicomTag.StudyDate, DateTime.Now);
             worklistDataSet.Add(DicomTag.StudyTime, DateTime.Now);
@@ -74,25 +73,19 @@ namespace ModalityWorkList
             worklistDataSet.Add(DicomTag.DateTime, DateTime.Now);
             worklistDataSet.Add(DicomTag.Date, DateTime.Now);
             worklistDataSet.Add(DicomTag.Time, DateTime.Now);
-
             string tempFolder = Path.Combine(Path.GetTempPath(), nameof(ModalityWorkList));
             //string savePath = @"W:\" + patient.PatientID + "_" + yyyyMMddHHmmss + ".wl";
             string savePath = Path.Combine(tempFolder, patient.PatientID + "_" + yyyyMMddHHmmss + ".wl");
             Directory.CreateDirectory(tempFolder);
             DicomFile worklistFile = new DicomFile(worklistDataSet);
             worklistFile.Save(savePath);
-
             bool uploadSuccess = SftpUploadOneFile(
                 "172.16.2.148",
                 "pacs",
                 "pacs123698745",
                 savePath,
                 "/etc/worklists/" + patient.PatientID + "_" + yyyyMMddHHmmss + ".wl");
-
-            if (uploadSuccess != true)
-            {
-                throw new Exception("failed");
-            }
+            if (uploadSuccess != true) { throw new Exception("failed"); }
         }
 
         public static void CreateWorklistForUS(Patient patient)
@@ -118,24 +111,18 @@ namespace ModalityWorkList
             worklistDataSet.Add(DicomTag.DateTime, DateTime.Now);
             worklistDataSet.Add(DicomTag.Date, DateTime.Now);
             worklistDataSet.Add(DicomTag.Time, DateTime.Now);
-
             string tempFolder = Path.Combine(Path.GetTempPath(), nameof(ModalityWorkList));
             string savePath = Path.Combine(tempFolder, patient.PatientID + "_" + yyyyMMddHHmmss + ".wl");
             Directory.CreateDirectory(tempFolder);
             DicomFile worklistFile = new DicomFile(worklistDataSet);
             worklistFile.Save(savePath);
-
             bool uploadSuccess = SftpUploadOneFile(
                 "172.16.2.148",
                 "pacs",
                 "pacs123698745",
                 savePath,
                 "/etc/worklists/" + patient.PatientID + "_" + yyyyMMddHHmmss + ".wl");
-
-            if (uploadSuccess != true)
-            {
-                throw new Exception("failed");
-            }
+            if (uploadSuccess != true) { throw new Exception("failed"); }
         }
 
         public static void CreateWorklistForDX(Patient patient)
@@ -161,29 +148,22 @@ namespace ModalityWorkList
             worklistDataSet.Add(DicomTag.DateTime, DateTime.Now);
             worklistDataSet.Add(DicomTag.Date, DateTime.Now);
             worklistDataSet.Add(DicomTag.Time, DateTime.Now);
-
             string tempFolder = Path.Combine(Path.GetTempPath(), nameof(ModalityWorkList));
             string savePath = Path.Combine(tempFolder, patient.PatientID + "_" + yyyyMMddHHmmss + ".wl");
             Directory.CreateDirectory(tempFolder);
             DicomFile worklistFile = new DicomFile(worklistDataSet);
             worklistFile.Save(savePath);
-
             bool uploadSuccess = SftpUploadOneFile(
                 "172.16.2.148",
                 "pacs",
                 "pacs123698745",
                 savePath,
                 "/etc/worklists/" + patient.PatientID + "_" + yyyyMMddHHmmss + ".wl");
-
-            if (uploadSuccess != true)
-            {
-                throw new Exception("failed");
-            }
+            if (uploadSuccess != true) { throw new Exception("failed"); }
         }
 
-
+        #region SCP Upload Method
         private const int DefaultPort = 22;
-
         public static bool ConnectStatus(string host, string name, string password)
         {
             try
@@ -198,7 +178,6 @@ namespace ModalityWorkList
                 return false;
             }
         }
-
         public static bool SendCommand(string host, string name, string password, string commandstr)
         {
             try
@@ -221,7 +200,6 @@ namespace ModalityWorkList
                 return false;
             }
         }
-
         public static bool SftpUploadOneFile(string host, string username, string password, string localPath, string remotePath)
         {
             try
@@ -238,6 +216,7 @@ namespace ModalityWorkList
                 return false;
             }
         }
+        #endregion
     }
 
     public class Patient
@@ -253,7 +232,7 @@ namespace ModalityWorkList
             if (modality == "MR") { this.ScheduledStationAETitle = "GEHC"; this.ScheduledStationName = "GEHC"; };
             if (modality == "CT") { this.ScheduledStationAETitle = "ct99"; this.ScheduledStationName = "CT99"; };
             if (modality == "DX") { this.ScheduledStationAETitle = "TERRA_NETWORK"; this.ScheduledStationName = "TERRA_NETWORK"; };
-            if (modality == "US") { this.ScheduledStationAETitle = "US"; this.ScheduledStationName = "US"; } ;
+            if (modality == "US") { this.ScheduledStationAETitle = "US"; this.ScheduledStationName = "US"; };
         }
         public string ScheduledStationAETitle { get; set; }
         public string ScheduledProcedureStepStartDate { get; set; }
